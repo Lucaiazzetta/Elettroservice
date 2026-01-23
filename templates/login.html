@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Login Flask + Mongo</title>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Area Riservata</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <div class="actions">
+            <button onclick="auth('login')">Login</button>
+            <button onclick="auth('register')" class="secondary">Registrati</button>
+        </div>
+        <p id="msg"></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

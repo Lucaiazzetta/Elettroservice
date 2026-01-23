@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Clienti - ElettroService</title>
+    <style>
+        /* ... (Mantenuti i tuoi stili originali) ... */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; color: #444; display: flex; min-height: 100vh; }
+        .sidebar { width: 250px; background-color: #ffffff; padding: 2rem; display: flex; flex-direction: column; border-right: 1px solid #e0e0e0; }
+        .logo { font-weight: 800; font-size: 1.4rem; color: #222; margin-bottom: 2rem; text-decoration: none; }
+        .menu-link { text-decoration: none; color: #666; padding: 12px 15px; margin-bottom: 8px; border-radius: 8px; transition: all 0.3s; display: block; cursor: pointer; }
+        .menu-link:hover, .menu-link.active { background-color: #eef5ff; color: #007bff; font-weight: 600; }
+        .logout { margin-top: auto; color: #dc3545; }
+        .main-content { flex: 1; padding: 2rem 3rem; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        
+        /* Stile aggiuntivo per il Form */
+        .form-container { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 30px; border: 1px solid #eee; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
+        .btn-submit { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        
+        .recent-orders { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; color: #888; font-weight: 500; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        td { padding: 15px 0; border-bottom: 1px solid #f9f9f9; color: #555; }
+        .badge { padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; background-color: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="#" class="logo">ElettroService</a>
+        <a href="#" class="menu-link active">Panoramica</a>
+        <a href="#" class="menu-link" onclick="location.reload()">I miei Preventivi</a>
+        <a href="#" class="menu-link logout" onclick="window.location.href='/login.html'">Esci</a>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h2 id="welcome-msg">Caricamento...</h2>
+            <div style="color: #666;">Utente Cliente</div>
+        </header>
+
+        <div class="form-container">
+            <h3>Richiedi un nuovo Preventivo</h3>
+            <p style="font-size: 0.9rem; color: #777; margin-bottom: 15px;">Descrivi il problema del tuo dispositivo.</p>
+            <form id="quote-form">
+                <div class="form-group">
+                    <label>Modello Dispositivo / Servizio</label>
+                    <input type="text" id="title" placeholder="Es: iPhone 14 Pro - Cambio Schermo" required>
+                </div>
+                <div class="form-group">
+                    <label>Descrizione Dettagliata</label>
+                    <textarea id="description" rows="3" placeholder="Descrivi il guasto..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Invia Richiesta</button>
+            </form>
+        </div>
+
+        <div class="recent-orders">
+            <h3>I tuoi Preventivi recenti</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Servizio</th>
+                        <th>Descrizione</th>
+                        <th>Stato</th>
+                    </tr>
+                </thead>
+                <tbody id="quotes-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+  const API_BASE = "http://127.0.0.1:5000/api";
+
+// Caricamento tabella
+async function loadQuotes() {
+    try {
+        const response = await fetch(`${API_BASE}/get_quotes`, { credentials: 'include' });
+        if (!response.ok) throw new Error();
+        const quotes = await response.json();
+        document.getElementById('quotes-body').innerHTML = quotes.map(q => `
+            <tr><td>${q.date}</td><td><strong>${q.title}</strong></td><td>${q.description}</td><td>In Attesa</td></tr>
+        `).join('');
+    } catch (err) { console.error("Errore sessione"); }
+}
+
+// Invio preventivo
+document.getElementById('quote-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const payload = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value
+    };
+    const response = await fetch(`${API_BASE}/submit_quote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // <--- QUESTA RIGA È VITALE
+        body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    if(data.success) { alert("Inviato!"); loadQuotes(); }
+    else { alert("Errore: " + data.message); }
+});
+
+window.onload = loadQuotes;
+    </script>
+</body>
+</html>

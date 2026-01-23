@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Registrazione - ElettroService</title>
+    <style>
+        body { font-family: sans-serif; display: grid; place-items: center; min-height: 100vh; background: #f0f2f5; }
+        .form-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 350px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
+        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h2>Crea Account</h2>
+        <input type="text" id="reg-username" placeholder="Username">
+        <input type="password" id="reg-password" placeholder="Password">
+        <button onclick="register()">Registrati</button>
+        <p id="msg"></p>
+        <a href="login.html">Hai già un account? Accedi</a>
+    </div>
+
+    <script>
+       async function register() {
+    const username = document.getElementById('reg-username').value;
+    const password = document.getElementById('reg-password').value;
+    const msgElement = document.getElementById('msg');
+
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        // Leggiamo il JSON anche se lo stato è 400 o 500
+        const data = await response.json();
+        
+        if (response.ok) {
+            msgElement.innerText = "✅ " + data.message;
+            msgElement.style.color = "green";
+            setTimeout(() => window.location.href = 'login.html', 2000);
+        } else {
+            // Qui vedrai "Username già occupato" se l'errore è 400
+            msgElement.innerText = "❌ " + (data.message || "Errore durante la registrazione");
+            msgElement.style.color = "red";
+        }
+    } catch (error) {
+        msgElement.innerText = "❌ Errore di connessione al server";
+        msgElement.style.color = "red";
+    }
+}
+    </script>
+</body>
+</html>
