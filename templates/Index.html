@@ -3,168 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Accogliente</title>
-    <style>
-        /* --- RESET E BASI --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #444; /* Colore testo leggermente più morbido del nero */
-            background-color: #fdfdfd; /* Bianco quasi impercettibilmente caldo */
-        }
+    <link rel="stylesheet" href="styleindex.css">
+    <title>Home</title>
 
-        /* --- HEADER (Menu Centrato) --- */
-        header {
-            background-color: #ffffff;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: center; /* Centra il menu */
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03); /* Ombra più soffice */
-            position: relative;
-        }
-
-        .logo {
-            font-weight: 800; /* Più cicciotto */
-            font-size: 1.4rem;
-            color: #222;
-            text-decoration: none;
-            position: absolute;
-            left: 2rem;
-            letter-spacing: -0.5px;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 30px; /* Più respiro tra i link */
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #666;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover { color: #007bff; }
-
-        /* --- HERO SECTION (NUOVO - Per accoglienza) --- */
-        .hero {
-            /* Sfumatura delicata blu/viola */
-            background: linear-gradient(135deg, #f0f4ff 0%, #eef1f5 100%);
-            padding: 80px 20px;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            color: #1a1a1a;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            color: #555;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* --- MAIN CONTENT --- */
-        main {
-            max-width: 900px;
-            margin: 0 auto 60px auto;
-            padding: 0 20px;
-        }
-
-        /* --- FEATURES GRID (NUOVO - Per fiducia) --- */
-        .features {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 50px;
-            flex-wrap: wrap; /* Per mobile */
-        }
-
-        .feature-item {
-            flex: 1; /* Occupa spazio uguale */
-            text-align: center;
-            padding: 20px;
-            min-width: 200px;
-        }
-        
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .feature-item h4 { margin-bottom: 5px; color: #333; }
-        .feature-item p { font-size: 0.9rem; color: #777; }
-
-        /* --- CARD LOGIN --- */
-        .login-card {
-            background-color: #ffffff;
-            border: 1px solid #eee; /* Bordo più sottile */
-            border-radius: 16px; /* Più arrotondato */
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04); /* Ombra diffusa ed elegante */
-            max-width: 600px;
-            margin: 0 auto; /* Centra la card */
-        }
-
-        .login-card h3 { margin-bottom: 10px; color: #222; }
-        .login-card p { margin-bottom: 25px; font-size: 0.95rem; color: #666;}
-
-        .btn-login {
-            display: inline-block;
-            background-color: #007bff;
-            color: white;
-            padding: 12px 30px;
-            text-decoration: none;
-            border-radius: 50px; /* A pillola, più accogliente */
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); /* Ombra colorata sotto il bottone */
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px); /* Si alza leggermente */
-            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
-        }
-
-        /* --- FOOTER (NUOVO) --- */
-        footer {
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid #eaeaea;
-            font-size: 0.8rem;
-            color: #999;
-            margin-top: 40px;
-        }
-    </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo">ElettroService</a>
-        <nav>
-            <ul>
-                <li><a href="Ing.html">Home</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="contatti.html">Contatti</a></li>
-            </ul>
-        </nav>
+  <nav class="navbar">
+    <a href="#" class="logo">ElettroService</a>
+
+    <div class="nav-links">
+        <a href="Index.html" class="menu-link active">Home</a>
+        <a href="contatti.html" class="menu-link active">Contatti</a>
+        
+    </div>
+
+    <a href="login.html" class="btn-login-nav">Login</a>
+</nav>
     </header>
 
     <div class="hero">
         <h1>Soluzioni Semplici</h1>
-        <p>Benvenuto nel nostro portale. Offriamo servizi su misura per far crescere il tuo business con trasparenza.</p>
+        <p>Benvenuto nel nostro portale. Offriamo servizi di riparazione su misura per ogni tuo problema.</p>
     </div>
 
     <main>
@@ -190,13 +51,13 @@
         <div class="login-card">
             <h3>Area Clienti</h3>
             <p>Accedi per visualizzare i listini riservati e richiedere un preventivo personalizzato.</p>
-            <a href="#" class="btn-login">Effettua il Login</a>
+            <a href="login.html" class="btn-login-big">Effettua il Login</a>
         </div>
 
     </main>
 
     <footer>
-        &copy; 2024 TuoBrand. Tutti i diritti riservati.
+        &copy; 2024 ElettroService. Tutti i diritti riservati.
     </footer>
 
 </body>

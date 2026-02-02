@@ -14,6 +14,17 @@ body {
     height: 100vh;
     color: #333;
 }
+.form-card{
+
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+
+}
 
 /* Container Principale */
 .login-container {
@@ -65,6 +76,7 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    background-color: #3498db;
 }
 
 button:first-child {

@@ -1,0 +1,200 @@
+ 
+        * {
+             margin: 0; 
+             padding: 0;
+              box-sizing: border-box; }
+
+        body {
+         font-family: 'Segoe UI', sans-serif; 
+         background-color: #f4f6f9; color: #444;
+         display: flex;
+        flex-direction: column; 
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        min-height: 100vh; }
+       
+        .navbar .logo {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+    
+        .menu-link { 
+            text-decoration: none;
+             color: #666;
+              padding: 12px 15px;
+               margin-bottom: 8px;
+                border-radius: 8px;
+                 transition: all 0.3s;
+                  display: block; 
+                  cursor: pointer; }
+
+        .menu-link:hover, .menu-link.active {
+             background-color: #eef5ff; 
+            color: #007bff;
+             font-weight: 600; }
+
+        .logout {
+             margin-top: auto;
+              color: #dc3545; }
+
+        .main-content {
+             flex: 1;
+             padding: 2rem 3rem;
+              width: 100%;            
+               margin-left: 0;                              
+               box-sizing: border-box; }
+
+        header { 
+            display: flex;
+             justify-content: space-between;
+              align-items: center;
+               margin-bottom: 2rem; }
+        
+        
+        .form-container { 
+            background: white;
+             padding: 25px;
+              border-radius: 16px; 
+              box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+               margin-bottom: 30px;
+                border: 1px solid #eee; }
+
+        .form-group {
+             margin-bottom: 15px; }
+
+        .form-group label {
+             display: block;
+              margin-bottom: 5px; 
+              font-weight: 600; }
+
+        .form-group input, .form-group textarea {
+             width: 100%;
+              padding: 10px; 
+              border: 1px solid #ddd; 
+              border-radius: 8px;
+               font-family: inherit; }
+
+        .btn-submit {
+             background: #007bff;
+              color: white; 
+              border: none; 
+              padding: 10px 20px; 
+              border-radius: 8px; 
+              cursor: pointer;
+               font-weight: 600; }
+        
+        .lista-preventivi { 
+            background: white;
+             padding: 25px; 
+             border-radius: 16px;
+              box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+
+        table {
+             width: 100%;
+              border-collapse: collapse;
+               margin-top: 15px; }
+
+        th { text-align: left;
+             color: #888;
+              font-weight: 500; 
+              padding-bottom: 15px; 
+              border-bottom: 1px solid #eee; }
+
+        td { 
+            padding: 15px 0;
+             border-bottom: 1px solid #f9f9f9;
+              color: #555; }
+
+        .badge { padding: 5px 12px; 
+            border-radius: 50px;
+             font-size: 0.8rem;
+              font-weight: 600;
+               background-color: #fff3cd;
+                color: #856404; }
+
+
+.navbar {
+    display: flex;              /* Dispone gli elementi in riga invece che in colonna */
+    justify-content: space-between; 
+    align-items: center;        
+    background-color: #1e1e1e; 
+    padding: 15px 30px;        
+    width: 100%;                /* Occupa tutta la larghezza */
+    box-sizing: border-box;     
+    position: sticky;           
+    top: 0;
+    z-index: 1000;              /* Assicura che stia sopra gli altri elementi */
+}
+
+
+.navbar .logo {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+.nav-links {
+    display: flex;
+    gap: 20px; 
+}
+
+
+.navbar .menu-link {
+    color: #b0b0b0;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 12px;
+    transition: 0.3s; /* Animazione fluida al passaggio del mouse */
+    border-radius: 4px;
+}
+
+
+.navbar .menu-link:hover,
+.navbar .menu-link.active {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1); 
+}
+
+
+.navbar .menu-link.logout:hover {
+    background-color: #d9534f;
+    color: white;
+}
+
+
+.modal {
+    display: none; /* Nascosto di default */
+    position: fixed; 
+    z-index: 2000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Sfondo scuro trasparente */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10vh auto; /* Distanza dall'alto */
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 900px; 
+    border-radius: 12px;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-btn:hover { 
+    color: #000; }

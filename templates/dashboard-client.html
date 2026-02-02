@@ -3,49 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"   href="styleuser.css">
     <title>Area Clienti - ElettroService</title>
-    <style>
-        /* ... (Mantenuti i tuoi stili originali) ... */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; color: #444; display: flex; min-height: 100vh; }
-        .sidebar { width: 250px; background-color: #ffffff; padding: 2rem; display: flex; flex-direction: column; border-right: 1px solid #e0e0e0; }
-        .logo { font-weight: 800; font-size: 1.4rem; color: #222; margin-bottom: 2rem; text-decoration: none; }
-        .menu-link { text-decoration: none; color: #666; padding: 12px 15px; margin-bottom: 8px; border-radius: 8px; transition: all 0.3s; display: block; cursor: pointer; }
-        .menu-link:hover, .menu-link.active { background-color: #eef5ff; color: #007bff; font-weight: 600; }
-        .logout { margin-top: auto; color: #dc3545; }
-        .main-content { flex: 1; padding: 2rem 3rem; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        
-        /* Stile aggiuntivo per il Form */
-        .form-container { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 30px; border: 1px solid #eee; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
-        .btn-submit { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-        
-        .recent-orders { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th { text-align: left; color: #888; font-weight: 500; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        td { padding: 15px 0; border-bottom: 1px solid #f9f9f9; color: #555; }
-        .badge { padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; background-color: #fff3cd; color: #856404; }
-    </style>
+    
 </head>
 <body>
 
-    <div class="sidebar">
-        <a href="#" class="logo">ElettroService</a>
-        <a href="#" class="menu-link active">Panoramica</a>
-        <a href="#" class="menu-link" onclick="location.reload()">I miei Preventivi</a>
+   <nav class="navbar">
+    <a href="#" class="logo">ElettroService</a>
+
+    <div class="nav-links">
+        <a href="Index.html" class="menu-link active">Home</a>
+       <a href="#" class="menu-link" onclick="apriPopupPreventivi()">I miei Preventivi</a>
         <a href="#" class="menu-link logout" onclick="window.location.href='/login.html'">Esci</a>
+    </div>
+</nav>
+
+<div class="main-content">
     </div>
 
     <div class="main-content">
         <header>
-            <h2 id="welcome-msg">Caricamento...</h2>
-            <div style="color: #666;">Utente Cliente</div>
+            
+            <h2 id="welcome-msg">Richiedi un preventivo compilando il form di richiesta</h2>
+            
         </header>
 
         <div class="form-container">
+            
             <h3>Richiedi un nuovo Preventivo</h3>
             <p style="font-size: 0.9rem; color: #777; margin-bottom: 15px;">Descrivi il problema del tuo dispositivo.</p>
             <form id="quote-form">
@@ -61,7 +46,28 @@
             </form>
         </div>
 
-        <div class="recent-orders">
+        <div id="modalPreventivi" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="chiudiPopupPreventivi()">&times;</span>
+        <h3>I tuoi Preventivi </h3>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Servizio</th>
+                    <th>Descrizione</th>
+                    <th>Stato</th>
+                    <th>Prezzo</th>
+                </tr>
+            </thead>
+            <tbody id="quotes-body-popup">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+        <div class="lista-preventivi">
             <h3>I tuoi Preventivi recenti</h3>
             <table>
                 <thead>
@@ -72,46 +78,149 @@
                         <th>Stato</th>
                     </tr>
                 </thead>
-                <tbody id="quotes-body">
+                <tbody id="quotes-body-page">
                     </tbody>
             </table>
         </div>
     </div>
 
     <script>
-  const API_BASE = "http://127.0.0.1:5000/api";
 
-// Caricamento tabella
-async function loadQuotes() {
-    try {
-        const response = await fetch(`${API_BASE}/get_quotes`, { credentials: 'include' });
-        if (!response.ok) throw new Error();
-        const quotes = await response.json();
-        document.getElementById('quotes-body').innerHTML = quotes.map(q => `
-            <tr><td>${q.date}</td><td><strong>${q.title}</strong></td><td>${q.description}</td><td>In Attesa</td></tr>
-        `).join('');
-    } catch (err) { console.error("Errore sessione"); }
+        async function checkSession() {
+    const res = await fetch(`${API_BASE}/get_quotes`, {
+        credentials: 'include'
+    });
+    if (res.status === 401) {
+        window.location.href = "/login.html";
+    }
 }
 
-// Invio preventivo
+window.onload = () => {
+    checkSession();
+    loadQuotes();
+};
+
+ 
+ const API_BASE = "http://127.0.0.1:5000/api";
+
+
+async function loadQuotes() {
+    // 1. Selezioniamo entrambi i contenitori (Pagina e Popup)
+    const tbodyPage = document.getElementById('quotes-body-page');
+    const tbodyPopup = document.getElementById('quotes-body-popup');
+    
+    // Messaggio di caricamento per entrambi (se esistono nella pagina)
+    if(tbodyPage) tbodyPage.innerHTML = "<tr><td colspan='5'>Caricamento...</td></tr>";
+    if(tbodyPopup) tbodyPopup.innerHTML = "<tr><td colspan='5'>Caricamento...</td></tr>";
+
+    try {
+        const response = await fetch(`${API_BASE}/get_quotes`, { 
+            credentials: 'include' 
+        });
+
+        if (!response.ok) throw new Error("Errore sessione");
+
+        const quotes = await response.json();
+        
+        // Funzione helper per creare le righe HTML (così non ripetiamo codice)
+        const generateRows = (data) => {
+            if (data.length === 0) return "<tr><td colspan='5' style='text-align:center'>Nessun preventivo.</td></tr>";
+            
+            return data.map(q => {
+                let statusClass = "badge-waiting";
+                if (q.status === 'Approvato') statusClass = "badge-approved";
+                if (q.status === 'Rifiutato') statusClass = "badge-rejected";
+
+                return `
+                    <tr>
+                        <td>${q.date}</td>
+                        <td><strong>${q.title}</strong></td>
+                        <td>${q.description}</td>
+                        <td><span class="badge ${statusClass}">${q.status || 'In Attesa'}</span></td>
+                        <td>${q.price ? '€ ' + q.price : '---'}</td>
+                    </tr>
+                `;
+            }).join('');
+        };
+
+        const htmlRows = generateRows(quotes);
+
+        // 2. Inseriamo le righe in ENTRAMBE le tabelle
+        if(tbodyPage) tbodyPage.innerHTML = htmlRows;
+        if(tbodyPopup) tbodyPopup.innerHTML = htmlRows;
+
+    } catch (err) {
+        console.error("Errore nel caricamento:", err);
+    }
+}
+
 document.getElementById('quote-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const payload = {
         title: document.getElementById('title').value,
         description: document.getElementById('description').value
     };
+    
     const response = await fetch(`${API_BASE}/submit_quote`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include', // <--- QUESTA RIGA È VITALE
         body: JSON.stringify(payload)
     });
-    const data = await response.json();
-    if(data.success) { alert("Inviato!"); loadQuotes(); }
-    else { alert("Errore: " + data.message); }
-});
 
-window.onload = loadQuotes;
+    const data = await response.json();
+    if(data.success) {
+        alert("Inviato!");
+        loadQuotes();
+    } else {
+        alert("Errore: " + data.message);
+    }
+});
+// Apre il popup e ricarica i dati dal server Python
+function apriPopupPreventivi() {
+    document.getElementById("modalPreventivi").style.display = "block";
+    loadQuotes(); // Chiama la tua funzione esistente che fa il fetch
+}
+
+// Chiude il popup
+function chiudiPopupPreventivi() {
+    document.getElementById("modalPreventivi").style.display = "none";
+}
+
+// Chiude se clicchi fuori dal box bianco
+window.onclick = function(event) {
+    var modal = document.getElementById("modalPreventivi");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+async function loadUserData() {
+    try {
+       
+        
+       
+        const nomeUtente = localStorage.getItem("username"); 
+       
+      
+if (nomeUtente) {
+
+            
+            const headerGreeting = document.getElementById("user-greeting-header");
+            if(headerGreeting) headerGreeting.innerText = `Ciao, ${nomeUtente}`;
+        }
+    } catch (err) {
+        console.error("Impossibile caricare il nome utente", err);
+    }
+}
+        
+
+
+
+window.onload = () => {
+    checkSession();
+    loadQuotes();
+    loadUserData();
+    };
     </script>
 </body>
 </html>
